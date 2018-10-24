@@ -21,8 +21,6 @@ int main(){
   struct sockaddr_in serv_addr, client_addr;
 
   if((sock_fd=socket(AF_INET, SOCK_DGRAM, 0))<0)
-
-  if((sock_fd=socket(AF_INET, SOCK_DGRAM, 0))<0)
     error_msg("[udp_server][socket]");
   memset(&client_addr, 0, sizeof(client_addr));
   memset(&serv_addr, 0, sizeof(serv_addr));
@@ -44,4 +42,3 @@ int main(){
   }
   return 0;
 }
-//kom
