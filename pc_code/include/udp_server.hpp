@@ -19,12 +19,13 @@ class UDP_Server
   private:
     int port;
     int sock_fd;
-    struct sockaddr_in serv_addr, client_add;
+    struct sockaddr_in serv_addr, client_addr;
+    char* buffer;
 
   public:
     UDP_Server(int port_id);
     ~UDP_Server();
-    char* rcv_data(char &response);
+    char* rcv_data(char* response);
 };
 
 class UDP_Client
@@ -34,9 +35,9 @@ class UDP_Client
     struct sockaddr_in serv_addr;
     char* buffer;
   public:
-    UDP_Client(int port);
+    UDP_Client(int port, char* srv_ip);
     ~UDP_Client();
-    char* send_data();
+    char* send_data(char* msg);
 };
 inline void error_msg(char* msg){
   perror(msg);
