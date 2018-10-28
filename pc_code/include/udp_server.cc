@@ -40,7 +40,7 @@ char* UDP_Server::rcv_data(char* response){
  * UDP Client
  */
 
-UDP_Client::UDP_Client(int port, char* srv_ip){
+UDP_Client::UDP_Client(int port_id, char* srv_ip){
   this->buffer=(char*) malloc(sizeof(*buffer)*MAXLINE);
   if((this->sock_fd=socket(AF_INET, SOCK_DGRAM, 0))<0)
     error_msg("[UDP_Client][socket]");
