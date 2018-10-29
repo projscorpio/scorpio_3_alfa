@@ -3,7 +3,6 @@ CFLAGS= -Wall -Wextra
 INCLUDES= -I./include/*cc
 SRC=controll_rover.cc
 OBJS=$(SRC:.c=.o)
-LIBS= -lWiring
 
 TARGET=control_rover
 
