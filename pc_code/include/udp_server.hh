@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/poll.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -10,9 +11,12 @@
 #ifndef __UDP_SERVER_H__
 #define __UDP_SERVER_H__
 
+#define TIMEOUT_VAL_S  0 //seconds
+#define TIMEOUT_VAL_US 400 //microseconds
 #define MAXLINE 1024
 #define DRV_PORT 8080
 #define SRV_IP ""
+#define RETURN_0_0_VALUE ""
 
 /*
  * UDP Server Class. 
@@ -27,9 +31,9 @@
 class UDP_Server
 {
   private:
-    int port;
     int sock_fd;
     struct sockaddr_in serv_addr, client_addr;
+    struct timeval timeout;
     char* buffer;
 
   public:
@@ -46,14 +50,17 @@ class UDP_Server
  *   srv_ip -- server ip
  * char* send_data(char* msg)
  *   msg -- send msg
- *   return value -- data from client
+ *   return value -- data from server
  */
 class UDP_Client
 {
   private:
     int sock_fd;
     struct sockaddr_in serv_addr;
+    struct timeval timeout;
+    struct pollfd fds;
     char* buffer;
+    bool is_available();
   public:
     UDP_Client(int port_id, char* srv_ip);
     ~UDP_Client();
