@@ -13,7 +13,7 @@
 #define TIMEOUT_VAL_S  3 //seconds
 #define TIMEOUT_VAL_US 400 //microseconds
 #define MAXLINE 1024
-#define DRV_PORT 8080
+#define DRV_PORT 7001
 #define SRV_IP ""
 #define RETURN_0_0_VALUE "0x0_0x0_0x0_0x0"
 
@@ -36,9 +36,9 @@ class UDP_Server
     char* buffer;
 
   public:
-    UDP_Server(int port_id);
+    UDP_Server(const int port_id);
     ~UDP_Server();
-    char* rcv_data(char* response);
+    char* rcv_data(const char* response);
 };
 
 
@@ -59,13 +59,13 @@ class UDP_Client
     struct timeval timeout;
     char* buffer;
   public:
-    UDP_Client(char* srv_ip, int port_id);
+    UDP_Client(const char* srv_ip, const int port_id);
     ~UDP_Client();
-    char* send_data(char* msg);
+    char* send_data(const char* msg);
 };
 
 
-inline void error_msg(char* msg){
+inline void error_msg(const char* msg){
   perror(msg);
   exit(EXIT_FAILURE);
 }

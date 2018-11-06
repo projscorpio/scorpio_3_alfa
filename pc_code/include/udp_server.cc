@@ -4,7 +4,7 @@
  * UDP SERVER
  */
 
-UDP_Server::UDP_Server(int port_id){
+UDP_Server::UDP_Server(const int port_id){
   this->buffer=(char*) malloc(sizeof(*buffer)*MAXLINE);
 
   if((this->sock_fd=socket(AF_INET, SOCK_DGRAM, 0))<0)
@@ -33,7 +33,7 @@ UDP_Server::~UDP_Server(){
   free(this->buffer);
 }
 
-char* UDP_Server::rcv_data(char* response){
+char* UDP_Server::rcv_data(const char* response){
   int len=sizeof(this->client_addr), n=0;
   bzero(this->buffer, MAXLINE);
   if((n=recvfrom(this->sock_fd, (char*) this->buffer, MAXLINE, 0,
@@ -56,7 +56,7 @@ char* UDP_Server::rcv_data(char* response){
  * UDP Client
  */
 
-UDP_Client::UDP_Client(char* srv_ip, int port_id){
+UDP_Client::UDP_Client(const char* srv_ip, const int port_id){
   this->buffer=(char*) malloc(sizeof(*buffer)*MAXLINE);
   if((this->sock_fd=socket(AF_INET, SOCK_DGRAM, 0))<0)
     error_msg("[UDP_Client][socket]");
@@ -81,7 +81,7 @@ UDP_Client::~UDP_Client(){
   free(buffer);
 }
 
-char* UDP_Client::send_data(char* msg){
+char* UDP_Client::send_data(const char* msg){
   int n=0, len=sizeof(this->serv_addr);
   bzero(this->buffer, MAXLINE);
   if(sendto(this->sock_fd, (const char*) msg, strlen(msg),
