@@ -72,8 +72,10 @@ void controllerPositions::setting()
 	int pwm_duty_cycle = fabs((float)axis[2]/SHRT_MAX*255);
 	int turn = fabs((float)axis[0]/SHRT_MAX*255);
 
-	left_wheel(pwm_duty_cycle>0, (int)left_value_factor(turn)*pwm_duty_cycle);
-	right_wheel(pwm_duty_cycle>0, (int)right_value_factor(turn)*pwm_duty_cycle);
+	left_wheel(pwm_duty_cycle*left_value_factor(turn)>0, 
+      (int)left_value_factor(turn)*pwm_duty_cycle);
+	right_wheel(pwm_duty_cycle*right_value_factor(turn)>0,
+      (int)right_value_factor(turn)*pwm_duty_cycle);
 }
 
 double controllerPositions::right_value_factor(int turn){
