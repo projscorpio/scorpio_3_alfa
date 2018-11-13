@@ -1,5 +1,4 @@
 #include "joystick.hh"
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -7,8 +6,33 @@
 #include <string>
 #include <sstream>
 #include "unistd.h"
+#include "bits/stdc++.h"
 
+std::string CommunicationModule::coding(void)
+{
+	std::string ax[4];
+	for(int i = 0; i < 4; i++)
+	{
+	std::stringstream ss;
+	ss << std::hex << this->AXIS[i];
+	ax[i] = "0x" + ss.str();
+	std::cout << ax[i] <<std::endl;
+	}
+	std::string stringToSend;
+	stringToSend = ax[0]+"_"+ax[1]+"_"+ax[2]+"_"+ax[3];
+	std::cerr<<stringToSend<<std::endl;
+	return stringToSend;
+}
 
+void CommunicationModule::buttonSetting(int number, bool value)
+{
+	this->BUTTON[number] = value;
+}
+
+void CommunicationModule::axisSetting(int number, int value)
+{
+	this->AXIS[number] = value;
+}
 
 Joystick::Joystick()
 {

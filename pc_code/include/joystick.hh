@@ -12,13 +12,24 @@
 class CommunicationModule
 {
 private:
-  bool BUT0,BUT1,BUT2,BUT3,BUT4,BUT5,BUT6,BUT7;
-  short AX0,AX1,AX2,AX3;
-  
+  bool BUTTON[8];
+  short AXIS[4];
+
 public:
-  CommunicationModule();
+  CommunicationModule()
+	{
+	for(int i = 0; i < 4; i++) 
+		{
+			BUTTON[i] = false;
+			AXIS[i] = 0;
+		}
+	}
   ~CommunicationModule();
+	void buttonSetting(int, bool);
+	void axisSetting(int, int);
+	std::string coding(void);
 };
+
 
 // Encapsulates all data relevant to a sampled joystick event.
 //------------Joystick Event Class-------------
