@@ -1,5 +1,5 @@
-#include "joystick.hh"
-#include "udp_server.hh"
+#include "include/joystick.hh"
+#include "include/udp_server.hh"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -40,7 +40,6 @@ int main(int argc, char** argv)
       }
     }
 	system("clear");
-	//strcpy(data,buffor->coding().c_str());
 	client->send_data(buffor->coding().c_str());
   }
 }

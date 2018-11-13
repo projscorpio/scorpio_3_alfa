@@ -1,7 +1,7 @@
-CC=g++
+CXX=g++
 CFLAGS= -Wall -Wextra
-INCLUDES= -I./include/*cc
-SRC=controll_rover.cc
+INCLUDES= include/*cc
+SRC=control_rover.cc
 OBJS=$(SRC:.c=.o)
 
 TARGET=control_rover
@@ -10,10 +10,10 @@ TARGET=control_rover
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(TARGET)
+	$(CXX) $(CFLAGS) $(INCLUDES) $(SRC) -o $(TARGET)
 
 .c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+	$(CXX) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
 	@rm *.o *~ $(MAIN)
