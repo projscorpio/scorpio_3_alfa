@@ -1,15 +1,17 @@
 CXX=g++
 CXXFLAGS= -Wall -pthread
-INCLUDES= include/*.cc
-SRC=main.cc
+INCLUDES= -I include/
+SRC=drive_rover.cc
 OBJS=$(SRC:.cc=.o)
 LIBS= -lpigpio -lrt
 
-all: prog.o
+TARGET=drive_rover
+
+all: $(TARGET)
 
 
 clean:
 	@rm *.o *~ $(MAIN)
 
-prog.o: main.cc 
-	$(CXX) $(CXXFLAGS) -o prog $(SRC) $(INCLUDES) $(LIBS)
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC) $(INCLUDES) $(LIBS)
