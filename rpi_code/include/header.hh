@@ -90,7 +90,7 @@ double controllerPositions::left_value_factor(int turn){
 	if(turn>0)
 		return 1;
 	else 
-		return (-255+2*turn)/255;
+		return (255+2*turn)/255;
 }
 void controllerPositions::right_wheel(bool is_forward, int duty_cycle){
 	if(is_forward){
