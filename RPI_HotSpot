@@ -1,0 +1,46 @@
+#ciezko bedzie tu zamiescic jakikolwiek, kod, 
+#poniewaz wszystko bazuje na instrukcjach w bashu, ale postaram sie dodawac niezbedne komentarze
+
+#Proces opisany tutaj bazuje na wysyłaniu komend przez PUTTy
+#1. Jesli na RPi mamy już zainstalowny Raspbian, to do karty SD na ktorej jest oprogramowanie, dodajemy pusty plik tekstowy SSH, 
+#pozbywając sie rozszerzenia txt.
+#2. Nastepnie Podpinamy Rpi do sieci, za pomoca kabla ethernet do ktorej równiez, jest podłaczone urzadzenie,
+#na ktorym mamy zainstalowane PUTTy
+#3.Po wykonaniu powyzszych czynnosci, oraz uruchomieniu PUTTy, wpisujemy adres IP 192.168.0.1
+#4.W PUTTy wyswietlony zostanie komunikat ostrzegawczy, należy go pominac, a nastepnie przejdziemy do procesu logowania
+#5.login: pi ; haslo: raspberry
+#6. W tym momencie mozemy juz bez przeszkod operowac na RPI porzez PUTTy.
+#7. Tetaz by skonfigurowac interfejs sieciowy WIFi musimy zaczac od komendy 'sudo nano /etc/network/interfaces'
+#8. Naszym oczom powinien ukazac sie ciąg wpisów podobny do nstępującego
+#
+    #auto wlan0
+    allow-hotplug wlan0
+    iface wlan0 inet manual
+    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+  
+     iface default inet dhcp
+#  
+#9.Jezeli istnieja juz jakies wpisy dotycczace wlan0, nalezy sie ich pozbyc, oraz uzupelnic ciagiem wpisow podanym w pdpkt.8
+#10. Zadaniem tego ciagu wpisow, jest definiowac interfejs sieciowy wlan0, do poracy z domyslnymi ustawieniami routerow WiFi
+#11. Nastepnie wydajemy komendę: "sudo nano /etc/rc.local"
+#12.W tym pliku (na końcu) znajdziesz linię exit 0. Tuż nad tą linią, dodaj nową o następującej treści: "ifup wlan0"
+#13.Kolejnym krokiem jest konfiguracja parametrów sieci WiFi takich jak jej nazwa, hasło i sposób szyfrowania.
+#14.Nalezy wpisac komende: "sudo nano /etc/wp_supplicant/wpa_supplicant.conf"
+#15.Zapewne będzie tam kilka linii, ale nie będzie zdefiniowanej żadnej sieci.
+#16.Dodaj wpis network={}, a między nawiasami podaj wszystkie parametry sieci. Każdy jest w oddzielnej linii.
+
+    network={
+    ssid="SSID"
+    psk="HASŁO"
+        }
+#17.Oczywiście SSID i HASŁO muszą być odpowiednie dla Twojej sieci. Pozostałe paramatery RPi spróbuje dobrać automatycznie.
+#18.Po restarcie urządzenia (komenda sudo reboot) i odczekaniu pewnego czasu RPi powinno być dostępne w sieci WiFi.
+
+##### Istotne jest abu tu wspomniec, ze jesli napotkamy problemy, przy PUTTy, zawsze, mozna podlaczyc do RPI kalwiature oraz monitor
+#co rowniez umozliwi nam besposrednie ustawienie hotspotu, jedank jest to alternatywa.
+#### Gdy nasze Rpi ma juz postawiony HotSpot, po podlaczeniu sie do sieci RPI_hotSpot, mozemy napotkac problem przy 
+#laczeniu sie przez PUTTy z nasza maliną, otoz adres IP ktory zazwyczaj podajemy w PUTTy, nalezalo zastapic w przypadku RPI3, na ktorym
+#stawialem WiFi, przez nazwe "raspberrypi"!!! Jesli dalej napotykamy problem, nalezy podpiac RPi do monitora, i w terminalu wpisac
+# "hostname -I" lub "hostname"
+#wtedy uzyskamy nazwe ktora nalezy wpisac.
+Jakub Kazimierski
