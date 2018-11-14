@@ -1,6 +1,6 @@
 CXX=g++
 CXXFLAGS= -Wall -pthread
-INCLUDES= -I include/
+INCLUDES= include/*cc
 SRC=drive_rover.cc
 OBJS=$(SRC:.cc=.o)
 LIBS= -lpigpio -lrt
