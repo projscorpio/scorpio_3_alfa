@@ -99,7 +99,7 @@ void controllerPositions::right_wheel(bool is_forward, int duty_cycle){
 		gpioWrite(INB_R,LOW);
 	}
 	gpioPWM(PWM_R,duty_cycle);
-  printf("[Controller Positions][Right Wheel] %s: %d", is_forward? "forward": "reverse", duty_cycle);
+  printf("[Controller Positions][Right Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 
 void controllerPositions::left_wheel(bool is_forward, int duty_cycle){
@@ -111,6 +111,6 @@ void controllerPositions::left_wheel(bool is_forward, int duty_cycle){
 		gpioWrite(INB_L,HIGH);
 	}
 	gpioPWM(PWM_L,duty_cycle);
-  printf("[Controller Positions][Left Wheel] %s: %d", is_forward? "forward": "reverse", duty_cycle);
+  printf("[Controller Positions][Left Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 #endif

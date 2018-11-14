@@ -11,12 +11,14 @@ int main(int argc, char** argv)
   // Ensure that it was found and that we can use it
   if (!joystick.isFound())
   {
-    printf("open failed.\n");
+    printf("[Joystick][Init] Joystick not detected.\n");
     exit(1);
+  }else{
+    printf("[Joystick][Init] Joystick detected.\n");
   }
 
   CommunicationModule * buffor = new CommunicationModule;
-  UDP_Client * client = new UDP_Client("192.168.1.107",6969);
+  UDP_Client * client = new UDP_Client("192.168.1.101",6969);
   while (true)
   {
     // Restrict rate
@@ -39,7 +41,7 @@ int main(int argc, char** argv)
 	buffor->axisSetting(event.number,event.value);
       }
     }
-	system("clear");
+	//system("clear");
 	client->send_data(buffor->coding().c_str());
   }
 }
