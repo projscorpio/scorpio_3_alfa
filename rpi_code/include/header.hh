@@ -71,26 +71,29 @@ void controllerPositions::setting()
 {
 	int pwm_duty_cycle = - ((float)axis[2]/SHRT_MAX*255);
 	int turn = ((float)axis[0]/SHRT_MAX*255);
+  double left_factor=left_value_factor(turn), right_factor=right_value_factor(rurn);
+
   printf("[Controller Positions][Setting] Pwm:%d: Turn:%d\n", pwm_duty_cycle, turn);
+  printf("[Controller Positions][Setting] R_fact:%3f: L_fact:%3f\n", pwm_duty_cycle, turn);
 
 
-	left_wheel(pwm_duty_cycle*left_value_factor(turn)>0, 
-      (int)((double)left_value_factor(turn)*pwm_duty_cycle));
-	right_wheel(pwm_duty_cycle*right_value_factor(turn)>0,
-      (int)((double)right_value_factor(turn)*pwm_duty_cycle));
+	left_wheel(pwm_duty_cycle*left_factor>0, 
+      (int)((double)left_factor*pwm_duty_cycle));
+	right_wheel(pwm_duty_cycle*right_factor>0,
+      (int)((double)right_factor*pwm_duty_cycle));
 }
 
 double controllerPositions::right_value_factor(int turn){
 	if(turn<0)
 		return 1;
 	else 
-		return (255-2*turn)/255;
+		return (double)(255-2*turn)/255;
 }
 double controllerPositions::left_value_factor(int turn){
 	if(turn>0)
 		return 1;
 	else 
-		return (255+2*turn)/255;
+		return (double)(255+2*turn)/255;
 }
 void controllerPositions::right_wheel(bool is_forward, int duty_cycle){
 	if(is_forward){
