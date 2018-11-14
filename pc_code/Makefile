@@ -1,6 +1,6 @@
 CXX=g++
 CFLAGS= -Wall -Wextra
-INCLUDES= include/*cc
+INCLUDES= -I include/
 SRC=control_rover.cc
 OBJS=$(SRC:.c=.o)
 
