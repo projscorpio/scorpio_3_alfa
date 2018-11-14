@@ -71,6 +71,8 @@ void controllerPositions::setting()
 {
 	int pwm_duty_cycle = fabs((float)axis[2]/SHRT_MAX*255);
 	int turn = fabs((float)axis[0]/SHRT_MAX*255);
+  printf("[Controller Positions][Setting] Pwm:%d: Turn:%d\n", pwm_duty_cycle, turn);
+
 
 	left_wheel(pwm_duty_cycle*left_value_factor(turn)>0, 
       (int)left_value_factor(turn)*pwm_duty_cycle);

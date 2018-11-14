@@ -9,9 +9,8 @@ TARGET=drive_rover
 
 all: $(TARGET)
 
-
-clean:
-	@rm *.o *~ $(MAIN)
-
 $(TARGET): $(SRC)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC) $(INCLUDES) $(LIBS)
+
+clean:
+	@rm $(TARGET)
