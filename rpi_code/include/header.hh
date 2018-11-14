@@ -69,15 +69,15 @@ void controllerPositions::reading(const std::string codedText)
 //Reading from class and pinout setting
 void controllerPositions::setting()
 {
-	int pwm_duty_cycle = fabs((float)axis[2]/SHRT_MAX*255);
-	int turn = fabs((float)axis[0]/SHRT_MAX*255);
+	int pwm_duty_cycle = ((float)axis[2]/SHRT_MAX*255);
+	int turn = ((float)axis[0]/SHRT_MAX*255);
   printf("[Controller Positions][Setting] Pwm:%d: Turn:%d\n", pwm_duty_cycle, turn);
 
 
-	left_wheel(pwm_duty_cycle*left_value_factor(turn)>0, 
-      (int)left_value_factor(turn)*pwm_duty_cycle);
-	right_wheel(pwm_duty_cycle*right_value_factor(turn)>0,
-      (int)right_value_factor(turn)*pwm_duty_cycle);
+	left_wheel(pwm_duty_cycle*left_value_factor(turn)<0, 
+      (int)((double)left_value_factor(turn)*pwm_duty_cycle));
+	right_wheel(pwm_duty_cycle*right_value_factor(turn)<0,
+      (int)((double)right_value_factor(turn)*pwm_duty_cycle));
 }
 
 double controllerPositions::right_value_factor(int turn){
@@ -100,7 +100,7 @@ void controllerPositions::right_wheel(bool is_forward, int duty_cycle){
 		gpioWrite(INA_R,HIGH);
 		gpioWrite(INB_R,LOW);
 	}
-	gpioPWM(PWM_R,duty_cycle);
+	gpioPWM(PWM_R,abs(duty_cycle));
   printf("[Controller Positions][Right Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 
@@ -112,7 +112,7 @@ void controllerPositions::left_wheel(bool is_forward, int duty_cycle){
 		gpioWrite(INA_L,LOW);
 		gpioWrite(INB_L,HIGH);
 	}
-	gpioPWM(PWM_L,duty_cycle);
+	gpioPWM(PWM_L,abs(duty_cycle));
   printf("[Controller Positions][Left Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 #endif
