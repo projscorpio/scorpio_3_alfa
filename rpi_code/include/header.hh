@@ -74,7 +74,7 @@ void controllerPositions::setting()
   double left_factor=left_value_factor(turn), right_factor=right_value_factor(turn);
 
   printf("[Controller Positions][Setting] Pwm:%d: Turn:%d\n", pwm_duty_cycle, turn);
-  printf("[Controller Positions][Setting] R_fact:%3f: L_fact:%3f\n", pwm_duty_cycle, turn);
+  printf("[Controller Positions][Setting] R_fact:%3f: L_fact:%3f\n", right_factor, left_factor);
 
 
 	left_wheel(pwm_duty_cycle*left_factor>0, 
