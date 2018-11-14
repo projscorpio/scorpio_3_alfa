@@ -26,11 +26,13 @@ UDP_Server::UDP_Server(const int port_id){
   if(bind(this->sock_fd, (const struct sockaddr*) &this->serv_addr, 
         sizeof(this->serv_addr))<0)
     error_msg("[UDP_Server][bind]");
+  printf("[UDP_Server][Init] Ok");
 }
 
 UDP_Server::~UDP_Server(){
   close(this->sock_fd);
   free(this->buffer);
+  printf("[UDP_Server][Close] Ok");
 }
 
 char* UDP_Server::rcv_data(const char* response){
@@ -43,10 +45,10 @@ char* UDP_Server::rcv_data(const char* response){
     return this->buffer;
     }
   this->buffer[n]='\n';
-#ifdef DEGUB
+
   printf("[UDP_Server][rcvfrom] Data: %s", this->buffer);
   printf("[UDP_Server][rcvfrom] Response: %s", response);
-#endif
+  
   sendto(this->sock_fd, (const char*) response, strlen( (const char*)response),
       MSG_DONTWAIT, (const struct sockaddr*) &this->client_addr, len);
   return this->buffer;
@@ -74,11 +76,13 @@ UDP_Client::UDP_Client(const char* srv_ip, const int port_id){
 
   if(inet_aton(srv_ip, &this->serv_addr.sin_addr)<0)
     error_msg("[UDP_Client][inet_aton]");
+  printf("[UDP_Client][Init] Ok");
 }
 
 UDP_Client::~UDP_Client(){
   close(this->sock_fd);
   free(buffer);
+  printf("[UDP_Client][Close] Ok");
 }
 
 char* UDP_Client::send_data(const char* msg){
@@ -88,9 +92,9 @@ char* UDP_Client::send_data(const char* msg){
       MSG_DONTWAIT, (const struct sockaddr*) &this->serv_addr, 
       sizeof(this->serv_addr))<0)
     error_msg("[UDP_Client][sendto]");
-#ifdef DEGUB
+
   printf("[UDP_Client][sendto] Data: %s", msg);
-#endif
+
   if((n=recvfrom(this->sock_fd, (char*) this->buffer, MAXLINE, 
       0, (struct sockaddr*) &this->serv_addr, (socklen_t*) &len))<0)
     error_msg("[UPD_Client][recvfrom]");

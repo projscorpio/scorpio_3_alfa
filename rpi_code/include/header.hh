@@ -3,9 +3,9 @@
 
 #define PWM_R 15
 #define PWM_L 16
-#define INA_R 17
+#define INA_R 19
 #define INB_R 18
-#define INA_L 19
+#define INA_L 21
 #define INB_L 20
 #define HIGH 0x1
 #define LOW 0x0
