@@ -1,13 +1,13 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
-#define INA_R_0 18
+#define INA_R_0 14
 #define PWM_R_0 15
-#define INB_R_0 14
+#define INB_R_0 18
 
-#define INA_R_1 17
+#define INA_R_1 22
 #define PWM_R_1 27
-#define INB_R_1 22
+#define INB_R_1 17
 
 #define INA_L_0 21
 #define PWM_L_0 20
