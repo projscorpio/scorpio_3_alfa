@@ -1,17 +1,17 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
-#define INA_R_0 14
+#define INA_R_0 18
 #define PWM_R_0 15
-#define INB_R_0 18
+#define INB_R_0 14
 
 #define INA_R_1 17
 #define PWM_R_1 27
 #define INB_R_1 22
 
-#define INA_L_0 16
+#define INA_L_0 21
 #define PWM_L_0 20
-#define INB_L_0 21
+#define INB_L_0 16
 
 #define INA_L_1 13
 #define PWM_L_1 19
@@ -72,7 +72,7 @@ void controllerPositions::reading(const std::string codedText)
 void controllerPositions::setting()
 {
 	int pwm_duty_cycle = - ((float)axis[2]/SHRT_MAX*255);
-	int turn = ((float)axis[0]/SHRT_MAX*255);
+	int turn = - ((float)axis[0]/SHRT_MAX*255);
   double left_factor=left_value_factor(turn), right_factor=right_value_factor(turn);
 
 #ifdef DEBUG
