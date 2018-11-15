@@ -67,7 +67,7 @@ class UDP_Client
 
 inline void error_msg(const char* msg){
   perror(msg);
-  exit(EXIT_FAILURE);
+  //exit(EXIT_FAILURE);
 }
 
 #endif //__UDP_SERVER_H__
