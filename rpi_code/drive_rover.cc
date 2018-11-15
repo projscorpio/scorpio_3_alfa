@@ -13,7 +13,6 @@
 
 int main(void)
 {
-	system("clear");
 	std::cout<<"OK: Raspberry Pi init"<<std::endl;
 	if( gpioInitialise() < 0)
 		{
@@ -22,17 +21,12 @@ int main(void)
 		}
 		else std::cout<<"OK: Library linked!"<<std::endl;
 	controllerPositions* libr = new controllerPositions;
-	UDP_Server *serv = new UDP_Server(6969);
+	UDP_Server *serv = new UDP_Server(DRV_PORT);
 	while(1)
 	{
 		libr->reading(serv->rcv_data("0"));
 		libr->setting();
 
-		//gpioWrite(LED,HIGH);
-		//std::cout<<"Port 17: "<<gpioRead(LED)<<std::endl;
-		//gpioDelay(500000);
-		//gpioWrite(LED,LOW);
-		//std::cout<<"Port 17: "<<gpioRead(LED)<<std::endl;
 		gpioDelay(500);
 	}
 	gpioTerminate();

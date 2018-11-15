@@ -18,7 +18,7 @@ int main(int argc, char** argv)
   }
 
   CommunicationModule * buffor = new CommunicationModule;
-  UDP_Client * client = new UDP_Client("192.168.1.101",6969);
+  UDP_Client * client = new UDP_Client("pi3", DRV_PORT);
   while (true)
   {
     // Restrict rate
