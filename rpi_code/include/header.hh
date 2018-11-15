@@ -1,22 +1,24 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
-#define PWM_R 15
-#define PWM_L 16
-#define INA_R 19
-#define INB_R 18
-#define INA_L 21
-#define INB_L 20
+#define INA_R_0 14
+#define PWM_R_0 15
+#define INB_R_0 18
+
+#define INA_R_1 17
+#define PWM_R_1 27
+#define INB_R_1 22
+
+#define INA_L_0 16
+#define PWM_L_0 20
+#define INB_L_0 21
+
+#define INA_L_1 13
+#define PWM_L_1 19
+#define INB_L_1 26
+
 #define HIGH 0x1
 #define LOW 0x0
-
-std::string receivingData(void)
-{
-	std::string ss;
-	//Program to receive data from server
-	//String returning
-	return ss; 
-}
 
 std::vector<std::string> split(const std::string s, char delimiter)
 {
@@ -63,7 +65,7 @@ void controllerPositions::reading(const std::string codedText)
 		std::stringstream ss;
 		ss << std::hex << results[i];
 		ss >> this->axis[i];
-		if(axis[i] > 32768) axis[i] = axis[i] - 65535;
+		if(axis[i] > SHRT_MAX) axis[i] = axis[i] - USHRT_MAX;
 	}
 }
 //Reading from class and pinout setting
@@ -73,14 +75,15 @@ void controllerPositions::setting()
 	int turn = ((float)axis[0]/SHRT_MAX*255);
   double left_factor=left_value_factor(turn), right_factor=right_value_factor(turn);
 
+#ifdef DEBUG
   printf("[Controller Positions][Setting] Pwm:%d: Turn:%d\n", pwm_duty_cycle, turn);
   printf("[Controller Positions][Setting] R_fact:%3f: L_fact:%3f\n", right_factor, left_factor);
-
+#endif
 
 	left_wheel(pwm_duty_cycle*left_factor>0, 
-      (int)((double)left_factor*pwm_duty_cycle));
+      (int)(left_factor*pwm_duty_cycle));
 	right_wheel(pwm_duty_cycle*right_factor>0,
-      (int)((double)right_factor*pwm_duty_cycle));
+      (int)(right_factor*pwm_duty_cycle));
 }
 
 double controllerPositions::right_value_factor(int turn){
@@ -97,25 +100,39 @@ double controllerPositions::left_value_factor(int turn){
 }
 void controllerPositions::right_wheel(bool is_forward, int duty_cycle){
 	if(is_forward){
-		gpioWrite(INA_R,LOW);
-		gpioWrite(INB_R,HIGH);
+		gpioWrite(INA_R_0,LOW);
+		gpioWrite(INB_R_0,HIGH);
+
+		gpioWrite(INA_R_1,LOW);
+		gpioWrite(INB_R_1,HIGH);
 	}else{
-		gpioWrite(INA_R,HIGH);
-		gpioWrite(INB_R,LOW);
+		gpioWrite(INA_R_0,HIGH);
+		gpioWrite(INB_R_0,LOW);
+
+		gpioWrite(INA_R_1,HIGH);
+		gpioWrite(INB_R_1,LOW);
 	}
-	gpioPWM(PWM_R,abs(duty_cycle));
+	gpioPWM(PWM_R_0, abs(duty_cycle));
+	gpioPWM(PWM_R_1, abs(duty_cycle));
   printf("[Controller Positions][Right Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 
 void controllerPositions::left_wheel(bool is_forward, int duty_cycle){
 	if(is_forward){
-		gpioWrite(INA_L,HIGH);
-		gpioWrite(INB_L,LOW);
+		gpioWrite(INA_L_0,HIGH);
+		gpioWrite(INB_L_0,LOW);
+
+		gpioWrite(INA_L_1,HIGH);
+		gpioWrite(INB_L_1,LOW);
 	}else{
-		gpioWrite(INA_L,LOW);
-		gpioWrite(INB_L,HIGH);
+		gpioWrite(INA_L_0,LOW);
+		gpioWrite(INB_L_0,HIGH);
+
+		gpioWrite(INA_L_1,LOW);
+		gpioWrite(INB_L_1,HIGH);
 	}
-	gpioPWM(PWM_L,abs(duty_cycle));
+	gpioPWM(PWM_L_0, abs(duty_cycle));
+	gpioPWM(PWM_L_1, abs(duty_cycle));
   printf("[Controller Positions][Left Wheel] %s: %d\n", is_forward? "forward": "reverse", duty_cycle);
 }
 #endif
