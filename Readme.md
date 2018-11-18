@@ -10,7 +10,7 @@
 * run 
   ```
     make -C rpi_rover/
-    #sudo ./rpi_code/drive_rover
+    sudo ./rpi_code/drive_rover
   ```
 * change ip address to real in pc_code (line 21)
   ```
