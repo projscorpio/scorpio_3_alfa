@@ -1,46 +1,98 @@
-#ciezko bedzie tu zamiescic jakikolwiek, kod, 
-#poniewaz wszystko bazuje na instrukcjach w bashu, ale postaram sie dodawac niezbedne komentarze
+#wczesniej cos sie popsulo i nie mozna bylo postawic hot-spota, dlatego napisze instrukcje jeszcze raz
+#tym razem korzystalem z informacji na stronie "elinux.org"
+#po wykonaniu ponizszych instrukcji RPI powinno bez problemu udostepniac WiFi, testowalem komendy po zainstalowaniu na nowo Raspbiana
 
-#Proces opisany tutaj bazuje na wysyłaniu komend przez PUTTy
-#1. Jesli na RPi mamy już zainstalowny Raspbian, to do karty SD na ktorej jest oprogramowanie, dodajemy pusty plik tekstowy SSH, 
-#pozbywając sie rozszerzenia txt.
-#2. Nastepnie Podpinamy Rpi do sieci, za pomoca kabla ethernet do ktorej równiez, jest podłaczone urzadzenie,
-#na ktorym mamy zainstalowane PUTTy
-#3.Po wykonaniu powyzszych czynnosci, oraz uruchomieniu PUTTy, wpisujemy adres IP 192.168.0.1
-#4.W PUTTy wyswietlony zostanie komunikat ostrzegawczy, należy go pominac, a nastepnie przejdziemy do procesu logowania
-#5.login: pi ; haslo: raspberry
-#6. W tym momencie mozemy juz bez przeszkod operowac na RPI porzez PUTTy.
-#7. Tetaz by skonfigurowac interfejs sieciowy WIFi musimy zaczac od komendy 'sudo nano /etc/network/interfaces'
-#8. Naszym oczom powinien ukazac sie ciąg wpisów podobny do nstępującego
-#
-    #auto wlan0
-    allow-hotplug wlan0
-    iface wlan0 inet manual
-    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
-  
-     iface default inet dhcp
-#  
-#9.Jezeli istnieja juz jakies wpisy dotycczace wlan0, nalezy sie ich pozbyc, oraz uzupelnic ciagiem wpisow podanym w pdpkt.8
-#10. Zadaniem tego ciagu wpisow, jest definiowac interfejs sieciowy wlan0, do poracy z domyslnymi ustawieniami routerow WiFi
-#11. Nastepnie wydajemy komendę: "sudo nano /etc/rc.local"
-#12.W tym pliku (na końcu) znajdziesz linię exit 0. Tuż nad tą linią, dodaj nową o następującej treści: "ifup wlan0"
-#13.Kolejnym krokiem jest konfiguracja parametrów sieci WiFi takich jak jej nazwa, hasło i sposób szyfrowania.
-#14.Nalezy wpisac komende: "sudo nano /etc/wp_supplicant/wpa_supplicant.conf"
-#15.Zapewne będzie tam kilka linii, ale nie będzie zdefiniowanej żadnej sieci.
-#16.Dodaj wpis network={}, a między nawiasami podaj wszystkie parametry sieci. Każdy jest w oddzielnej linii.
 
-    network={
-    ssid="SSID"
-    psk="HASŁO"
-        }
-#17.Oczywiście SSID i HASŁO muszą być odpowiednie dla Twojej sieci. Pozostałe paramatery RPi spróbuje dobrać automatycznie.
-#18.Po restarcie urządzenia (komenda sudo reboot) i odczekaniu pewnego czasu RPi powinno być dostępne w sieci WiFi.
+#####
+#1.Musimy zainstalowac na Rpi potrzebne oprogramowanie, zamierzony efekt uzyskamy
+wpisujac komende " sudo apt-get unstall hostapd udhcpd"
+#2.Nastepnie musimy skonfigurowac DHCP, wpisujemy komende " sudo nano /etc/udhcpd.conf"
+przejdziemy do edytora, w ktorym powinnismy skonfigurowac niektore linijki tekstu 
+w nastepujacy sposob 
 
-##### Istotne jest abu tu wspomniec, ze jesli napotkamy problemy, przy PUTTy, zawsze, mozna podlaczyc do RPI kalwiature oraz monitor
-#co rowniez umozliwi nam besposrednie ustawienie hotspotu, jedank jest to alternatywa.
-#### Gdy nasze Rpi ma juz postawiony HotSpot, po podlaczeniu sie do sieci RPI_hotSpot, mozemy napotkac problem przy 
-#laczeniu sie przez PUTTy z nasza maliną, otoz adres IP ktory zazwyczaj podajemy w PUTTy, nalezalo zastapic w przypadku RPI3, na ktorym
-#stawialem WiFi, przez nazwe "raspberrypi"!!! Jesli dalej napotykamy problem, nalezy podpiac RPi do monitora, i w terminalu wpisac
-# "hostname -I" lub "hostname"
-#wtedy uzyskamy nazwe ktora nalezy wpisac.
-Jakub Kazimierski
+interface wlan0 # wczesniej bylo eth0.
+remaining yes
+opt dns 8.8.8.8 4.2.2.2 
+opt subnet 255.255.255.0
+opt router 192.168.10.2 # RPi's IP address.
+opt lease 864000 # 10 day DHCP lease time in seconds
+
+
+#3.Nastepnie nalezy po wyjsciu z edytora, wpisac komende "sudo nano /etc/default/udhcpd"
+i komentujemy linijke " DHCPD_ENABLED="no" ",, tak aby wygladała nastepujaco
+" #DHCPD_ENABLED="no" ".
+#4.Nadajemy Rpi staly adres IP "sudo ifconfig wlan0 192.168.42.1"
+#5.Nastepnie "sudo nano /etc/network/interfaces"
+i jesli juz sa jakies wpisy o wlan0 np."iface wlan0 inet dhcp"
+to zmieniamy to w nastepujacy sposob 
+
+iface wlan0 inet static
+  address 192.168.10.2 
+  netmask 255.255.255.0
+
+jezeli tych wpisow nie ma, tak bylo w moim przypadku, nalezy dodac powyzsze linijki
+
+dodatkowo musimy "skomentowac" nastepujace linijki tekstu, aby wygladaly tak:
+
+
+#allow-hotplug wlan0
+#wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+#iface default inet dhcp
+
+#6.Nastepnie wpisujemy komende "sudo nano /etc/hostapd/hostapd.conf"
+i dodajemy nastepujace linijki tekstu
+
+
+interface=wlan0
+driver=nl80211
+ssid="Nazwa hotspotu"
+hw_mode=g
+channel=6
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase="haslo do wifi"
+wpa_key_mgmt=WPA-PSK
+
+#7.nastepnie "sudo nano /etc/default/hostapd"
+i linijke "#DAEMON_CONF="" "
+zmieniamy w nastepujacy sposob " DAEMON_CONF="/etc/hostapd/hostapd.conf" "
+#8.Kolejnym krokiem jest komenda "sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward" "
+#9. Nastepnie wchodzimy w plik "sudo nano /etc/sysctl.conf" i na jego koncu dodajemy fragment
+"net.ipv4.ip_forward=1"
+#10.Wpisujemy komende "sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
+#11.Wpisujemy "sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
+#12.Wpisujemy "sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT"
+#13.Wpisujemy "sudo sh -c "iptables-save > /etc/iptables.ipv4.nat" "
+#14.Wchodzimy w plik "sudo nano /etc/network/interfaces"
+i na koncu dodajemy "up iptables-restore < /etc/iptables.ipv4.nat"
+#15.Wpisujemy "sudo service hostapd start"
+#16.wpisujemy "sudo service udhcpd start"
+#17.Wpisujemy "sudo update-rc.d hostapd enable"
+#18.Wpisujemy "sudo update-rc.d udhcpd enable"
+
+#19.Po tym wszystkim "sudo reboot" 
+po restarcie HotSpot powinien juz dzialac bez zarzutu.
+
+Jakub Kazimierski.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
