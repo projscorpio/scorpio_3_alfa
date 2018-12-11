@@ -16,8 +16,8 @@ UDP_Server::UDP_Server(const int port_id){
   this->serv_addr.sin_addr.s_addr=INADDR_ANY;
   this->serv_addr.sin_port=htons(port_id);
 
-  this->timeout.tv_sec=TIMEOUT_VAL_S;
-  this->timeout.tv_usec=TIMEOUT_VAL_US;
+  this->timeout.tv_sec=SERVER_TIMEOUT_VAL_S;
+  this->timeout.tv_usec=SERVER_TIMEOUT_VAL_US;
 
   if(setsockopt(this->sock_fd, SOL_SOCKET, SO_RCVTIMEO, 
         (char*) &this->timeout, sizeof(this->timeout))<0)
@@ -67,8 +67,8 @@ UDP_Client::UDP_Client(const char* srv_ip, const int port_id){
   this->serv_addr.sin_family=AF_INET;
   this->serv_addr.sin_port=htons(port_id);
 
-  this->timeout.tv_sec=TIMEOUT_VAL_S;
-  this->timeout.tv_usec=TIMEOUT_VAL_US;
+  this->timeout.tv_sec=CLIENT_TIMEOUT_VAL_S;
+  this->timeout.tv_usec=CLIENT_TIMEOUT_VAL_US;
 
   if(setsockopt(this->sock_fd, SOL_SOCKET, SO_RCVTIMEO, 
         (char*) &this->timeout, sizeof(this->timeout))<0)
@@ -97,7 +97,7 @@ char* UDP_Client::send_data(const char* msg){
 
   if((n=recvfrom(this->sock_fd, (char*) this->buffer, MAXLINE, 
       0, (struct sockaddr*) &this->serv_addr, (socklen_t*) &len))<0)
-    error_msg("[UPD_Client][recvfrom]\n");
+    error_msg("[UPD_Client][recvfrom]");
   this->buffer[n]='\n';
   return this->buffer;
 }

@@ -10,11 +10,13 @@
 #ifndef __UDP_SERVER_H__
 #define __UDP_SERVER_H__
 
-#define TIMEOUT_VAL_S  0 //seconds
-#define TIMEOUT_VAL_US 700 //microseconds
+#define SERVER_TIMEOUT_VAL_S  0 //seconds
+#define SERVER_TIMEOUT_VAL_US 700 //microseconds
+#define CLIENT_TIMEOUT_VAL_S  1 //seconds
+#define CLIENT_TIMEOUT_VAL_US 500 //microseconds
 #define MAXLINE 1024
 #define DRV_PORT 7001
-#define SRV_IP ""
+#define SRV_IP "192.168.4.1"
 #define RETURN_0_0_VALUE "0x0_0x0_0x0_0x0"
 
 /*

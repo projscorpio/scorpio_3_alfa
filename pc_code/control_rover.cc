@@ -22,7 +22,7 @@ int main(int argc, char** argv)
   while (true)
   {
     // Restrict rate
-    usleep(500);
+    usleep(300);
 
     // Attempt to sample an event from the joystick
     JoystickEvent event;
