@@ -18,11 +18,11 @@ int main(int argc, char** argv)
   }
 
   CommunicationModule * buffor = new CommunicationModule;
-  UDP_Client * client = new UDP_Client("pi3", DRV_PORT);
+  UDP_Client * client = new UDP_Client("192.168.4.1", DRV_PORT);
   while (true)
   {
     // Restrict rate
-    usleep(1000);
+    usleep(300);
 
     // Attempt to sample an event from the joystick
     JoystickEvent event;

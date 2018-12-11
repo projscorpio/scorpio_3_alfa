@@ -27,7 +27,7 @@ int main(void)
 		libr->reading(serv->rcv_data("0"));
 		libr->setting();
 
-		gpioDelay(500);
+		gpioDelay(200);
 	}
 	gpioTerminate();
 	delete libr;

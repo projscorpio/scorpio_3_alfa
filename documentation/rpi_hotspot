@@ -1,0 +1,36 @@
+sudo apt-get install dnsmasq hostapd;
+sudo systemctl stop dnsmasq & sudo systemctl stop hostapd;
+sudo reboot;
+sudo vim /etc/dhcpcd.conf;
+  interface wlan0               #for check wifi interface $ip a
+      static ip_address=192.168.4.1/24
+      nohook wpa_supplicant
+sudo service dhcpcd restart;
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig;
+sudo nano /etc/dnsmasq.conf;
+  interface=wlan1      # Use the require wireless interface - usually wlan0
+    dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+sudo nano /etc/hostapd/hostapd.conf;
+  interface=wlan1
+  driver=nl80211
+  ssid=scorpio_jr
+  hw_mode=g
+  channel=7
+  wmm_enabled=0
+  macaddr_acl=0
+  auth_algs=1
+  ignore_broadcast_ssid=0
+  wpa=2
+  wpa_passphrase=bobo_to_pala_123
+  wpa_key_mgmt=WPA-PSK
+  wpa_pairwise=TKIP
+  rsn_pairwise=CCMP
+sudo nano /etc/default/hostapd;
+  DAEMON_CONF="/etc/hostapd/hostapd.conf"
+sudo systemctl start hostapd; sudo systemctl start dnsmasq;
+sudo vim /etc/sysctl.conf;
+  net.ipv4.ip_forward=1
+sudo iptables -t nat -A  POSTROUTING -o eth0 -j MASQUERADE;
+sudo sh -c "iptables-save > /etc/iptables.ipv4.nat";
+sudo vim /etc/rc.local;
+  iptables-restore < /etc/iptables.ipv4.nat
