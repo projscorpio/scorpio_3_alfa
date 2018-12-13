@@ -13,11 +13,11 @@
 #include "include/udp_server.hh"
 
 void rover_stop(void){
-  gpioWrite(INA_R_0,LOW);
-  gpioWrite(INB_R_0,LOW);
+  gpioWrite(INA_R_0,HIGH);
+  gpioWrite(INB_R_0,HIGH);
 
-  gpioWrite(INA_R_1,LOW);
-  gpioWrite(INB_R_1,LOW);
+  gpioWrite(INA_R_1,HIGH);
+  gpioWrite(INB_R_1,HIGH);
 
 	gpioPWM(PWM_R_0, abs(0));
 	gpioPWM(PWM_R_1, abs(0));
