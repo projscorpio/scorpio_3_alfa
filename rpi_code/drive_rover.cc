@@ -12,15 +12,27 @@
 #include "include/header.hh"
 #include "include/udp_server.hh"
 
+void rover_stop(void){
+  gpioWrite(INA_R_0,LOW);
+  gpioWrite(INB_R_0,LOW);
+
+  gpioWrite(INA_R_1,LOW);
+  gpioWrite(INB_R_1,LOW);
+
+	gpioPWM(PWM_R_0, abs(0));
+	gpioPWM(PWM_R_1, abs(0));
+  printf("[Drive Rover] Rover stop");
+}
+
 void sig_int(int signum){
   fprintf(stderr, "[Drive Rover] Interrupt signal received");
-  libr->reading(RETURN_0_0_VALUE);
+  rover_stop();
   exit(signum);
 }
 
 void sig_term(int signum){
   fprintf(stderr, "[Drive Rover] Terminate signal received");
-  libr->reading(RETURN_0_0_VALUE);
+  rover_stop();
   exit(signum);
 }
 
