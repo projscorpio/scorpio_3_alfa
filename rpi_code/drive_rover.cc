@@ -12,6 +12,7 @@
 #include "include/header.hh"
 #include "include/udp_server.hh"
 
+controllerPositions* libr = new controllerPositions;
 void sig_int(int signum){
   fprintf(stderr, "[Drive Rover] Interrupt signal received");
   libr->reading(RETURN_0_0_VALUE);
@@ -34,7 +35,6 @@ int main(void)
 			std::cerr<<"[Drive Rover] Error: Library fault"<<std::endl;
 			exit(1);
 		}else std::cout<<"[Drive Rover] OK: Library linked!"<<std::endl;
-	controllerPositions* libr = new controllerPositions;
 	UDP_Server *serv = new UDP_Server(DRV_PORT);
 	while(1)
 	{
