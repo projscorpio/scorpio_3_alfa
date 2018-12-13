@@ -8,18 +8,32 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <csignal>
 #include "include/header.hh"
 #include "include/udp_server.hh"
 
+void sig_int(int signum){
+  fprintf(stderr, "[Drive Rover] Interrupt signal received");
+  libr->reading(RETURN_0_0_VALUE);
+  exit(signum);
+}
+
+void sig_term(int signum){
+  fprintf(stderr, "[Drive Rover] Terminate signal received");
+  libr->reading(RETURN_0_0_VALUE);
+  exit(signum);
+}
+
 int main(void)
 {
-	std::cout<<"OK: Raspberry Pi init"<<std::endl;
+	std::cout<<"[Drive Rover] OK: Raspberry Pi init"<<std::endl;
+  signal(SIGTERM, sig_term);
+  signal(SIGINT, sig_int);
 	if( gpioInitialise() < 0)
 		{
-			std::cerr<<"Error: Library fault"<<std::endl;
+			std::cerr<<"[Drive Rover] Error: Library fault"<<std::endl;
 			exit(1);
-		}
-		else std::cout<<"OK: Library linked!"<<std::endl;
+		}else std::cout<<"[Drive Rover] OK: Library linked!"<<std::endl;
 	controllerPositions* libr = new controllerPositions;
 	UDP_Server *serv = new UDP_Server(DRV_PORT);
 	while(1)

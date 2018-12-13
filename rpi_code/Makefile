@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS= -Wall -pthread
+CXXFLAGS= -Wall -pthread -pedantic -O3 -Wextra
 INCLUDES= include/*cc
 SRC=drive_rover.cc
 OBJS=$(SRC:.cc=.o)

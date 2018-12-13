@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS= -std=c++11 -Wall -Wextra 
+CXXFLAGS= -std=c++11 -Wall -Wextra -O3 -pedantic
 INCLUDES=  include/*cc
 SRC=control_rover.cc
 OBJS=$(SRC:.c=.o)

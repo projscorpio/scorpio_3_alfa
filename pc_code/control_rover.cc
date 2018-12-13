@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv)
+int main(void)
 {
   // Create an instance of Joystick
   Joystick joystick("/dev/input/js0");

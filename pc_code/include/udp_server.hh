@@ -11,7 +11,7 @@
 #define __UDP_SERVER_H__
 
 #define SERVER_TIMEOUT_VAL_S  0 //seconds
-#define SERVER_TIMEOUT_VAL_US 700 //microseconds
+#define SERVER_TIMEOUT_VAL_US 900 //microseconds
 #define CLIENT_TIMEOUT_VAL_S  1 //seconds
 #define CLIENT_TIMEOUT_VAL_US 500 //microseconds
 #define MAXLINE 1024
