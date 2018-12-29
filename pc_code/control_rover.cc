@@ -2,12 +2,31 @@
 #include "include/udp_server.hh"
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <sys/time.h>
+
+#define TIMER_SEC 5
+#define TIMER_USEC 0
+
+// Create an instance of Joystick
+Joystick joystick("/dev/input/js0");
+UDP_Client * client;
+
+void sig_term(int signo){
+  fprintf(stderr, "[Joystick][Terminate] Signal received");
+  client->send_data(RETURN_0_0_VALUE);
+  exit(signo);
+}
+
+void sig_alrm(int signo){
+  while(joystick.isFound()){
+    fprintf(stderr, "[Joystick][Plug check] Joystick not detected\n");
+    client->send_data(RETURN_0_0_VALUE);
+  }
+}
 
 int main(void)
 {
-  // Create an instance of Joystick
-  Joystick joystick("/dev/input/js0");
-
   // Ensure that it was found and that we can use it
   if (!joystick.isFound())
   {
@@ -17,8 +36,18 @@ int main(void)
     printf("[Joystick][Init] Joystick detected.\n");
   }
 
+  // take over signals 
+  signal(SIGTERM, sig_term);
+  signal(SIGINT, sig_term);
+  signal(SIGALRM, sig_alrm);
+
+  struct itimerval js_timer;
+  js_timer.it_interval.tv_sec = js_timer.it_value.tv_sec = TIMER_SEC;
+  js_timer.it_interval.tv_usec = js_timer.it_value.tv_usec = TIMER_USEC;
+  setitimer(ITIMER_REAL, &js_timer, 0);
+
   CommunicationModule * buffor = new CommunicationModule;
-  UDP_Client * client = new UDP_Client(SRV_IP, DRV_PORT);
+  client = new UDP_Client(SRV_IP, DRV_PORT);
   while (true)
   {
     // Restrict rate
