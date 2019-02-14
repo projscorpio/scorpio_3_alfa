@@ -62,12 +62,12 @@ int main(void)
         //printf("Button %u is %s\n",
         //event.number,
         //event.value == 0 ? "up" : "down");
-	  buffor->buttonSetting(event.number,event.value);
+        buffor->buttonSetting(event.number,event.value);
       }
       else if (event.isAxis())
       {
         //printf("Axis %u is at position %d\n", event.number, event.value);
-	buffor->axisSetting(event.number,event.value);
+        buffor->axisSetting(event.number,event.value);
       }
     }
 	//system("clear");
